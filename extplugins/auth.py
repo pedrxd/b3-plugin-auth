@@ -19,7 +19,7 @@ __author__ = 'pedrxd';
 import b3
 import b3.events
 import b3.plugin
-
+from b3.querybuilder import QueryBuilder
 
 class AuthPlugin(b3.plugin.Plugin):
     requiresConfigFile = False
@@ -111,7 +111,11 @@ class AuthPlugin(b3.plugin.Plugin):
 
 
     def db_putauth(self, client, auth):
-        q = 'INSERT INTO authmod (clientid, auth) VALUES ({0}, "{1}") ON CONFLICT(clientid) DO UPDATE SET auth="{1}"'.format(client.id, auth)
+        if self.db_getauth(client) is None:
+            q = QueryBuilder(self.console.storage.db).InsertQuery({'clientid':client.id,'auth':auth},'authmod')
+        else:
+            q = QueryBuilder(self.console.storage.db).UpdateQuery({'auth':auth}, 'authmod', {'clientid':clientid})
+
         self.console.storage.query(q)
 
     def db_delauth(self, client):
@@ -119,7 +123,7 @@ class AuthPlugin(b3.plugin.Plugin):
         self.console.storage.query(q)
 
     def db_getauth(self, client):
-        q = "SELECT * FROM authmod WHERE clientid = {0}".format(client.id)
+        q = QueryBuilder(self.console.storage.db).SelectQuery(('auth'), 'authmod', {'clientid':client.id})
         s = self.console.storage.query(q)
         if s and not s.EOF:
             return s.getRow()['auth']

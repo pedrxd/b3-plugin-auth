@@ -1,4 +1,4 @@
 CREATE TABLE authmod (
-  clientid NUMBER PRIMARY KEY,
+  clientid INT(10) PRIMARY KEY,
   auth VARCHAR(64)
 );
