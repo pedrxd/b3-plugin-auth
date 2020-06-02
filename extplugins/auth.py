@@ -114,7 +114,7 @@ class AuthPlugin(b3.plugin.Plugin):
         if self.db_getauth(client) is None:
             q = QueryBuilder(self.console.storage.db).InsertQuery({'clientid':client.id,'auth':auth},'authmod')
         else:
-            q = QueryBuilder(self.console.storage.db).UpdateQuery({'auth':auth}, 'authmod', {'clientid':clientid})
+            q = QueryBuilder(self.console.storage.db).UpdateQuery({'auth':auth}, 'authmod', {'clientid':client.id})
 
         self.console.storage.query(q)
 
