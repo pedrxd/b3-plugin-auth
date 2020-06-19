@@ -38,8 +38,8 @@ class AuthPlugin(b3.plugin.Plugin):
             self.console.storage.queryFromFile(sql_path)
 
         self._adminPlugin.registerCommand(self, 'auth', 80, self.cmd_auth)
-        self._adminPlugin.registerCommand(self, 'setauth', 100, self.cmd_setModAuth)
-        self._adminPlugin.registerCommand(self, 'delauth', 100, self.cmd_delModAuth)
+        self._adminPlugin.registerCommand(self, 'setauth', 100, self.cmd_setAuth)
+        self._adminPlugin.registerCommand(self, 'delauth', 100, self.cmd_delAuth)
 
         self.registerEvent(b3.events.EVT_CLIENT_JOIN, self.onChange)
 
@@ -77,7 +77,7 @@ class AuthPlugin(b3.plugin.Plugin):
         self.updateGameAuth(sclient, argv[1])
         client.message('The auth has been changed correctly')
 
-    def cmd_setModAuth(self, data, client, cmd=None):
+    def cmd_setAuth(self, data, client, cmd=None):
         """
         <player> <auth> - Set a persistent auth
         """
@@ -99,7 +99,7 @@ class AuthPlugin(b3.plugin.Plugin):
         client.message('The auth has been changed permantly')
 
 
-    def cmd_delModAuth(self, data, client, cmd=None):
+    def cmd_delAuth(self, data, client, cmd=None):
         """
         <player> - Remove persistent auth
         """
