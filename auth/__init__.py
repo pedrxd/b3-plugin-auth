@@ -19,6 +19,7 @@ __author__ = 'pedrxd';
 import b3
 import b3.events
 import b3.plugin
+import os
 from b3.querybuilder import QueryBuilder
 
 class AuthPlugin(b3.plugin.Plugin):
@@ -31,7 +32,12 @@ class AuthPlugin(b3.plugin.Plugin):
             self.error('Could not find admin plugin')
             return
 
-        self._adminPlugin.registerCommand(self, 'auth', 100, self.cmd_auth)
+        if 'authmod' not in self.console.storage.getTables():
+            external_dir = self.console.config.get_external_plugins_dir()
+            sql_path = os.path.join(external_dir, 'auth', 'sql', 'authmod.sql')
+            self.console.storage.queryFromFile(sql_path)
+
+        self._adminPlugin.registerCommand(self, 'auth', 80, self.cmd_auth)
         self._adminPlugin.registerCommand(self, 'setauth', 100, self.cmd_setModAuth)
         self._adminPlugin.registerCommand(self, 'delauth', 100, self.cmd_delModAuth)
 
